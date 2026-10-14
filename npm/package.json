@@ -1,6 +1,6 @@
 {
   "name": "shadowbox-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Zero-trust copy-on-write sandbox and interactive time-machine for AI coding agents",
   "license": "Apache-2.0",
   "author": "Nari-Ab",
