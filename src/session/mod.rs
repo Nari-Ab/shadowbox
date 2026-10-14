@@ -135,15 +135,29 @@ impl Session {
         for entry in WalkDir::new(&self.work_dir).min_depth(1) {
             let entry = entry?;
             let relative = entry.path().strip_prefix(&self.work_dir)?;
+
+            // Skip internal meta folders (.git, .shadowbox)
+            if relative.starts_with(".git") || relative.starts_with(".shadowbox") {
+                continue;
+            }
+
             let host_target = self.source_dir.join(relative);
 
             if entry.file_type().is_dir() {
                 fs::create_dir_all(&host_target)?;
             } else if entry.file_type().is_file() {
-                if let Some(parent) = host_target.parent() {
-                    fs::create_dir_all(parent)?;
+                // Only copy if modified or newly added
+                let should_copy = match (fs::read(entry.path()), fs::read(&host_target)) {
+                    (Ok(work_bytes), Ok(host_bytes)) => work_bytes != host_bytes,
+                    _ => true,
+                };
+
+                if should_copy {
+                    if let Some(parent) = host_target.parent() {
+                        fs::create_dir_all(parent)?;
+                    }
+                    fs::copy(entry.path(), &host_target)?;
                 }
-                fs::copy(entry.path(), &host_target)?;
             }
         }
 
