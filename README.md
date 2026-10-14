@@ -8,8 +8,8 @@
 ### Zero-trust copy-on-write sandbox and time-machine for AI coding agents
 
 [![CI](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml/badge.svg)](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml)
-[![isolation: 100% CoW](https://img.shields.io/badge/isolation-100%25%20CoW-1f9d55)](#)
-[![Release](https://img.shields.io/github/v/release/Nari-Ab/shadowbox?logo=github&color=cb3837)](https://github.com/Nari-Ab/shadowbox/releases)
+[![crates.io](https://img.shields.io/crates/v/shadowbox.svg?color=e05d44)](https://crates.io/crates/shadowbox)
+[![npm](https://img.shields.io/npm/v/shadowbox-cli.svg?color=cb3837)](https://www.npmjs.com/package/shadowbox-cli)
 [![downloads](https://img.shields.io/github/downloads/Nari-Ab/shadowbox/total?label=downloads&color=0b7285)](https://github.com/Nari-Ab/shadowbox/releases)
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
