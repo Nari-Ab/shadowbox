@@ -13,7 +13,7 @@
     "url": "https://github.com/Nari-Ab/shadowbox/issues"
   },
   "bin": {
-    "shadowbox": "./bin/shadowbox.js"
+    "shadowbox": "bin/shadowbox.js"
   },
   "files": [
     "bin",
