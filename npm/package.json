@@ -1,0 +1,26 @@
+{
+  "name": "shadowbox-cli",
+  "version": "0.1.0",
+  "description": "Zero-trust copy-on-write sandbox and interactive time-machine for AI coding agents",
+  "license": "Apache-2.0",
+  "author": "Nari-Ab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nari-Ab/shadowbox.git"
+  },
+  "bin": {
+    "shadowbox": "./bin/shadowbox.js"
+  },
+  "scripts": {
+    "postinstall": "node ./scripts/install.js"
+  },
+  "keywords": [
+    "ai-agents",
+    "agent-security",
+    "claude-code",
+    "cursor",
+    "sandbox",
+    "cow",
+    "time-machine"
+  ]
+}
