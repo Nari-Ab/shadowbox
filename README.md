@@ -18,10 +18,16 @@
 ShadowBox runs autonomous AI coding agents (Claude Code, Cursor, Aider, OpenHands) inside an ephemeral copy-on-write scratchpad on macOS and Linux. It strips secret credentials before the agent process spawns, isolates file mutations on an APFS zero-copy layer, and lets you review or discard changes before anything touches your real repository.
 
 ```bash
-# Install (macOS / Linux):
+# curl (macOS / Linux):
 curl -fsSL https://raw.githubusercontent.com/Nari-Ab/shadowbox/main/install.sh | bash
 
-# Run with your agent:
+# npx (instant, zero install):
+npx shadowbox-cli claude
+
+# cargo:
+cargo install shadowbox
+
+# run:
 shadowbox claude --dangerously-skip-permissions
 ```
 

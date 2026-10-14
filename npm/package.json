@@ -4,13 +4,23 @@
   "description": "Zero-trust copy-on-write sandbox and interactive time-machine for AI coding agents",
   "license": "Apache-2.0",
   "author": "Nari-Ab",
+  "homepage": "https://github.com/Nari-Ab/shadowbox#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Nari-Ab/shadowbox.git"
+    "url": "git+https://github.com/Nari-Ab/shadowbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Nari-Ab/shadowbox/issues"
   },
   "bin": {
     "shadowbox": "./bin/shadowbox.js"
   },
+  "files": [
+    "bin",
+    "scripts",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "postinstall": "node ./scripts/install.js"
   },

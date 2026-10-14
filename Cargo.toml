@@ -5,6 +5,18 @@ edition = "2021"
 authors = ["Antigravity & User <dev@shadowbox.local>"]
 description = "A zero-trust, copy-on-write sandbox and interactive time-machine for AI coding agents."
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/Nari-Ab/shadowbox"
+homepage = "https://github.com/Nari-Ab/shadowbox"
+readme = "README.md"
+keywords = ["ai-agents", "sandbox", "claude-code", "cursor", "security"]
+categories = ["command-line-utilities", "development-tools"]
+exclude = [
+    "docs/*",
+    "scripts/*",
+    "npm/*",
+    "Formula/*",
+    ".github/*",
+]
 
 [dependencies]
 clap = { version = "4.5", features = ["derive"] }
