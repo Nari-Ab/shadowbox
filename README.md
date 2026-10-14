@@ -15,37 +15,44 @@
 
 </div>
 
-ShadowBox wraps autonomous AI coding agents (Claude Code, Cursor, Aider, OpenHands) in an instant, copy-on-write scratchpad on macOS and Linux. It strips secret credentials before the agent runs, isolates all file operations on an APFS zero-copy layer, and lets you review or rollback changes with a single keystroke. No unapproved file is ever written to your host repository.
+ShadowBox runs autonomous AI coding agents (Claude Code, Cursor, Aider, OpenHands) inside an ephemeral copy-on-write scratchpad on macOS and Linux. It strips secret credentials before the agent process spawns, isolates file mutations on an APFS zero-copy layer, and lets you review or discard changes before anything touches your real repository.
 
 ```bash
 # Install (macOS / Linux):
 curl -fsSL https://raw.githubusercontent.com/Nari-Ab/shadowbox/main/install.sh | bash
 
-# Run:
+# Run with your agent:
 shadowbox claude --dangerously-skip-permissions
 ```
+
+Needs macOS (APFS) or Linux.
 
 What a session looks like:
 
 ```text
-shadowbox — zero-trust copy-on-write agent runtime
+shadowbox session — zero-trust copy-on-write runtime
 
-⚡ 2 file(s) modified in sandbox:
+2 file(s) modified in sandbox:
   ● [A] src/auth/jwt.ts (+38 lines)
   ● [M] package.json (+1 line)
 
-🔒 SECRETS BLOCKED: 3 credentials stripped (AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, SSH_AUTH_SOCK)
-📁 HOST WORKSPACE: 100% pristine (0 unapproved writes)
+SECRETS BLOCKED (3)
+  ● AWS_SECRET_ACCESS_KEY — stripped from process env
+  ● GITHUB_TOKEN          — stripped from process env
+  ● .env                  — masked with [SHADOWBOX_REDACTED]
+
+HOST REPOSITORY
+  ● 100% untouched, 0 unapproved writes
 
 CONTROLS
   [c] Commit approved changes to host
   [q] Discard sandbox and leave host untouched
-  [Tab] Toggle live console / diff viewer
+  [Tab] Toggle diff viewer
 ```
 
 <img src="docs/assets/case-study.gif" alt="ShadowBox running Claude Code in an isolated APFS scratchpad with secret protection and atomic commit" width="100%">
 
-- **Zero-Copy CoW.** Uses APFS `clonefile()` on macOS. Clones a 50,000-file project in ~15ms with 0 additional disk usage. Real files remain untouched until you commit.
+- **Zero-Copy CoW.** Uses APFS `clonefile()` on macOS. Clones a 50,000-file project in ~14ms with 0 bytes additional disk usage. Real files remain untouched until you commit.
 - **SecretShield.** Strips sensitive env vars (`AWS_*`, `SSH_*`, `GITHUB_TOKEN`, `DATABASE_URL`) from the agent's process environment and cloaks `.env` files with harmless mocks.
 - **One-key rollback.** Interactive dual-pane TUI or headless mode. Commit with `[c]`, abort and wipe with `[q]`.
 
@@ -53,3 +60,4 @@ CONTROLS
 
 - [Architecture & Design Spec](docs/superpowers/specs/2026-10-14-shadowbox-design.md)
 - [Implementation Plan](docs/superpowers/plans/2026-10-14-shadowbox-mvp.md)
+- [Launch Kit](docs/LAUNCH.md)

@@ -63,18 +63,18 @@ fn main() -> Result<()> {
         if sessions_dir.exists() {
             fs::remove_dir_all(&sessions_dir)
                 .context("Failed to clean .shadowbox directory")?;
-            println!("🧹 Successfully cleaned .shadowbox sessions in {}", root.display());
+            println!("cleaned .shadowbox sessions in {}", root.display());
         } else {
-            println!("✨ No .shadowbox sessions found in {}", root.display());
+            println!("no .shadowbox sessions found in {}", root.display());
         }
         return Ok(());
     }
 
     if cli.command.is_empty() {
-        println!("❌ Error: No command specified.");
-        println!("Usage: shadowbox <command...>");
-        println!("Example: shadowbox claude --dangerously-skip-permissions");
-        println!("Try 'shadowbox --help' for more options.");
+        println!("error: no command specified.");
+        println!("usage: shadowbox <command...>");
+        println!("example: shadowbox claude --dangerously-skip-permissions");
+        println!("try 'shadowbox --help' for options.");
         std::process::exit(1);
     }
 
@@ -112,8 +112,8 @@ fn main() -> Result<()> {
 
     if cli.no_tui {
         // Headless execution mode
-        println!("🛡️  ShadowBox sandbox active at: {}", session.work_dir().display());
-        println!("🚀 Executing: {:?}\n", cli.command);
+        println!("shadowbox: sandbox active at {}", session.work_dir().display());
+        println!("executing: {:?}\n", cli.command);
 
         let output = pty_handle.read_all_output()?;
         let status = pty_handle.wait()?;
@@ -121,13 +121,13 @@ fn main() -> Result<()> {
 
         println!("\n--------------------------------------------------");
         if status.success() {
-            println!("✅ Process exited successfully.");
-            println!("Applying approved changes to host...");
+            println!("process exited cleanly.");
+            println!("applying changes to host...");
             session.commit()?;
-            println!("🎉 Host workspace updated.");
+            println!("host workspace updated.");
         } else {
-            println!("❌ Process failed with status: {:?}", status);
-            println!("Discarding sandbox changes.");
+            println!("process failed with status: {:?}", status);
+            println!("discarding sandbox changes.");
             session.discard()?;
         }
         return Ok(());

@@ -21,11 +21,11 @@ pub fn render(app: &mut TuiApp, frame: &mut Frame) {
 
     // 1. Header
     let status_text = if app.is_running {
-        Span::styled(" RUNNING ⚡ ", Style::default().bg(Color::Yellow).fg(Color::Black).add_modifier(Modifier::BOLD))
+        Span::styled(" RUNNING ", Style::default().bg(Color::Yellow).fg(Color::Black).add_modifier(Modifier::BOLD))
     } else {
         match app.exit_code {
-            Some(0) => Span::styled(" FINISHED (EXIT 0) ✅ ", Style::default().bg(Color::Green).fg(Color::Black).add_modifier(Modifier::BOLD)),
-            Some(code) => Span::styled(format!(" FAILED (EXIT {}) ❌ ", code), Style::default().bg(Color::Red).fg(Color::White).add_modifier(Modifier::BOLD)),
+            Some(0) => Span::styled(" DONE (0) ", Style::default().bg(Color::Green).fg(Color::Black).add_modifier(Modifier::BOLD)),
+            Some(code) => Span::styled(format!(" FAILED ({}) ", code), Style::default().bg(Color::Red).fg(Color::White).add_modifier(Modifier::BOLD)),
             None => Span::styled(" STOPPED ", Style::default().bg(Color::DarkGray).fg(Color::White)),
         }
     };
@@ -160,7 +160,7 @@ pub fn render(app: &mut TuiApp, frame: &mut Frame) {
         _ => {
             // Security Audit
             let audit_lines = vec![
-                Line::from(Span::styled("🔒 SecretShield Audit Summary", Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD))),
+                Line::from(Span::styled("SecretShield Audit Summary", Style::default().fg(Color::Cyan).add_modifier(Modifier::BOLD))),
                 Line::from(""),
                 Line::from(vec![
                     Span::raw("• Blocked Environment Variables: "),

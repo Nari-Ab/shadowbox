@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generates a realistic terminal recording GIF with character-by-character typing
-and streaming terminal output for ShadowBox, styled cleanly like AGGIB/Stroq.
+and streaming terminal output for ShadowBox. Zero emojis, pure terminal aesthetics.
 """
 
 import os
@@ -40,10 +40,10 @@ def create_base_window():
     draw.line([0, 36, WIDTH - 1, 36], fill=BORDER_COLOR, width=1)
     draw.rectangle([0, 0, WIDTH - 1, HEIGHT - 1], outline=BORDER_COLOR, width=1)
 
-    # Traffic light buttons
-    draw.ellipse([14, 12, 26, 24], fill=(255, 95, 86))    # Close red
-    draw.ellipse([34, 12, 46, 24], fill=(255, 189, 46))   # Minimize yellow
-    draw.ellipse([54, 12, 66, 24], fill=(39, 201, 63))    # Zoom green
+    # Traffic light buttons (minimal, clean)
+    draw.ellipse([14, 12, 26, 24], fill=(255, 95, 86))
+    draw.ellipse([34, 12, 46, 24], fill=(255, 189, 46))
+    draw.ellipse([54, 12, 66, 24], fill=(39, 201, 63))
 
     # Titlebar text
     title = "shadowbox — terminal"
@@ -60,7 +60,6 @@ def render_frame(lines, cursor_pos=None):
 
     for item in lines:
         if isinstance(item, tuple) and len(item) == 2 and item[0] == "__BAR__":
-            # Render a control banner bar
             bar_text = item[1]
             draw.rectangle([20, y - 2, WIDTH - 20, y + line_height], fill=BAR_BG, outline=BORDER_COLOR)
             draw.text((28, y + 2), bar_text, font=bold_font, fill=CYAN_COLOR)
@@ -68,11 +67,9 @@ def render_frame(lines, cursor_pos=None):
             continue
 
         x = 24
-        # item is a list of (text, color) tuples
         for segment in item:
             text, color = segment
             draw.text((x, y), text, font=font, fill=color)
-            # measure width
             bbox = font.getbbox(text)
             x += (bbox[2] - bbox[0])
 
@@ -89,15 +86,9 @@ def main():
     durations = []
 
     prompt = [
-        ("➜ ", GREEN_COLOR),
-        ("my-project ", CYAN_COLOR),
-        ("git:(", MUTED_COLOR),
-        ("main", YELLOW_COLOR),
-        (")", MUTED_COLOR),
-        (" ", TEXT_COLOR),
+        ("user@mac:~/my-app$ ", MUTED_COLOR),
     ]
 
-    # Calculate prompt width
     prompt_w = 24
     for t, _ in prompt:
         b = font.getbbox(t)
@@ -105,8 +96,8 @@ def main():
 
     cmd_to_type = "shadowbox claude --dangerously-skip-permissions"
 
-    # 1. Initial idle frames with blinking cursor
-    for i in range(3):
+    # 1. Initial idle cursor
+    for i in range(2):
         frames.append(render_frame([prompt], cursor_pos=(prompt_w, 52) if i % 2 == 0 else None))
         durations.append(250)
 
@@ -116,16 +107,15 @@ def main():
         typed_so_far += char
         current_line = list(prompt) + [(typed_so_far, TEXT_COLOR)]
         
-        # calculate cursor x
         cur_w = 24
         for t, _ in current_line:
             b = font.getbbox(t)
             cur_w += (b[2] - b[0])
 
         frames.append(render_frame([current_line], cursor_pos=(cur_w, 52)))
-        durations.append(45 if char != " " else 90)
+        durations.append(40 if char != " " else 80)
 
-    # 3. Pause before Enter
+    # 3. Enter key
     full_cmd_line = list(prompt) + [(cmd_to_type, TEXT_COLOR)]
     cur_w = 24
     for t, _ in full_cmd_line:
@@ -133,52 +123,50 @@ def main():
         cur_w += (b[2] - b[0])
 
     frames.append(render_frame([full_cmd_line], cursor_pos=(cur_w, 52)))
-    durations.append(400)
+    durations.append(350)
 
-    # 4. Stream outputs line by line
+    # 4. Stream outputs line by line (clean text, no emojis)
     scene_lines = [full_cmd_line]
 
     step_lines = [
-        [("🛡️  ShadowBox: Zero-Copy APFS scratchpad initialized ", CYAN_COLOR), ("(14ms, 0 B)", MUTED_COLOR)],
-        [("   Workspace clone: ", MUTED_COLOR), (".shadowbox/sessions/179201-984/work", TEXT_COLOR)],
-        [("🔒 SecretShield: ", YELLOW_COLOR), ("3 credentials stripped from agent environment", TEXT_COLOR)],
-        [("   • Blocked: AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, SSH_AUTH_SOCK", MUTED_COLOR)],
-        [("   • Cloaked: .env (mocked with [SHADOWBOX_REDACTED])", MUTED_COLOR)],
-        [("⚡ Claude Code running in isolated sandbox...", PURPLE_COLOR)],
-        [("   [Claude] Reading .env... ", MUTED_COLOR), ("-> [BLOCKED by SecretShield]", RED_COLOR)],
-        [("   [Claude] Writing src/auth/session.ts ", MUTED_COLOR), ("(+48 lines)", GREEN_COLOR)],
-        [("   [Claude] Updating package.json ", MUTED_COLOR), ("(+1 line)", YELLOW_COLOR)],
-        [("📁 Real Host Repository: ", MUTED_COLOR), ("100% UNTOUCHED (0 unapproved writes)", GREEN_COLOR)],
-        ("__BAR__", "[c] Commit approved changes  |  [q] Discard sandbox  |  [Tab] View Diffs"),
+        [("shadowbox: zero-copy apfs scratchpad initialized ", CYAN_COLOR), ("(14ms, 0 B)", MUTED_COLOR)],
+        [("  workspace clone: ", MUTED_COLOR), (".shadowbox/sessions/179201-984/work", TEXT_COLOR)],
+        [("secret-shield: ", YELLOW_COLOR), ("3 credentials stripped from agent environment", TEXT_COLOR)],
+        [("  ● blocked: AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, SSH_AUTH_SOCK", MUTED_COLOR)],
+        [("  ● cloaked: .env (mocked with [SHADOWBOX_REDACTED])", MUTED_COLOR)],
+        [("agent: claude-code running in sandbox...", PURPLE_COLOR)],
+        [("  ● read .env -> ", MUTED_COLOR), ("denied by secret-shield", RED_COLOR)],
+        [("  ● wrote src/auth/session.ts ", MUTED_COLOR), ("(+48 lines)", GREEN_COLOR)],
+        [("  ● updated package.json ", MUTED_COLOR), ("(+1 line)", YELLOW_COLOR)],
+        [("host repository: ", MUTED_COLOR), ("100% untouched (0 unapproved writes)", GREEN_COLOR)],
+        ("__BAR__", "[c] commit changes  |  [q] discard sandbox  |  [Tab] diff viewer"),
     ]
 
     for line in step_lines:
         scene_lines.append(line)
         frames.append(render_frame(list(scene_lines)))
-        durations.append(180)
+        durations.append(160)
 
-    # 5. User pauses to inspect
+    # 5. User pauses
     frames.append(render_frame(list(scene_lines)))
-    durations.append(700)
+    durations.append(600)
 
     # 6. User presses [c]
     commit_input_line = [
-        ("➜ ", GREEN_COLOR),
-        ("User pressed ", MUTED_COLOR),
-        ("[c]", GREEN_COLOR),
-        (" -> Commit approved.", CYAN_COLOR),
+        ("user@mac:~/my-app$ ", MUTED_COLOR),
+        ("keystroke [c] -> commit approved", CYAN_COLOR),
     ]
     scene_lines.append(commit_input_line)
     frames.append(render_frame(list(scene_lines)))
     durations.append(250)
 
-    # 7. Atomically committed to host
+    # 7. Final confirmation
     final_line = [
-        ("✅ Changes atomically applied to host workspace. Session 179201 cleaned.", GREEN_COLOR)
+        ("shadowbox: changes applied to host repository. session cleaned.", GREEN_COLOR)
     ]
     scene_lines.append(final_line)
     frames.append(render_frame(list(scene_lines)))
-    durations.append(3500) # Hold final frame for 3.5s before looping
+    durations.append(3500)
 
     output_path = "docs/assets/case-study.gif"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -190,7 +178,7 @@ def main():
         loop=0,
         optimize=True,
     )
-    print(f"✅ Generated {output_path} ({len(frames)} frames)")
+    print(f"Generated {output_path} ({len(frames)} frames)")
 
 if __name__ == "__main__":
     main()
