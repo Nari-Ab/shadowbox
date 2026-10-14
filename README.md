@@ -9,9 +9,9 @@
 
 [![CI](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml/badge.svg)](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml)
 [![isolation: 100% CoW](https://img.shields.io/badge/isolation-100%25%20CoW-1f9d55)](#)
-[![crates.io](https://img.shields.io/badge/crates.io-v0.1.0-cb3837?logo=rust&logoColor=white)](https://crates.io)
-[![downloads](https://img.shields.io/badge/downloads-1.2k-0b7285)](#)
-[![License: MIT / Apache 2.0](https://img.shields.io/badge/license-MIT%2FApache%202.0-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/Nari-Ab/shadowbox?logo=github&color=cb3837)](https://github.com/Nari-Ab/shadowbox/releases)
+[![downloads](https://img.shields.io/github/downloads/Nari-Ab/shadowbox/total?label=downloads&color=0b7285)](https://github.com/Nari-Ab/shadowbox/releases)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 </div>
 
@@ -42,9 +42,7 @@ CONTROLS
   [Tab] Toggle live console / diff viewer
 ```
 
-<p align="center">
-  <img src="docs/assets/demo.svg" alt="ShadowBox Terminal Demo" width="100%">
-</p>
+<img src="docs/assets/case-study.gif" alt="ShadowBox running Claude Code in an isolated APFS scratchpad with secret protection and atomic commit" width="100%">
 
 - **Zero-Copy CoW.** Uses APFS `clonefile()` on macOS. Clones a 50,000-file project in ~15ms with 0 additional disk usage. Real files remain untouched until you commit.
 - **SecretShield.** Strips sensitive env vars (`AWS_*`, `SSH_*`, `GITHUB_TOKEN`, `DATABASE_URL`) from the agent's process environment and cloaks `.env` files with harmless mocks.

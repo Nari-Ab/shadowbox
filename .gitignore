@@ -1,4 +1,7 @@
 /target
 /.shadowbox
+.venv
+scratch_stroq.gif
+*.tar.gz
 .DS_Store
 **/*.rs.bk
