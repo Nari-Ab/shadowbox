@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 120" width="420" height="90" role="img" aria-labelledby="t">
+  <title id="t">ShadowBox</title>
+  <!-- Minimalist Geometric Box Shield Icon for Dark Mode -->
+  <g fill="none" stroke="#f4f4f5" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Isometric Cube Outer -->
+    <path d="M 60 22 L 102 46 L 102 94 L 60 118 L 18 94 L 18 46 Z" />
+    <path d="M 60 22 L 60 70 L 102 94" />
+    <path d="M 60 70 L 18 94" />
+    <!-- Inner Protected Core -->
+    <polygon points="60,45 80,56 80,80 60,91 40,80 40,56" fill="#10b981" stroke="none" opacity="0.25" />
+    <polygon points="60,52 74,60 74,77 60,85 46,77 46,60" fill="#10b981" stroke="none" />
+  </g>
+  <!-- Typography: Clean Geometric Modern Text -->
+  <text x="130" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="58" font-weight="700" letter-spacing="-1.5" fill="#f4f4f5">
+    shadowbox
+  </text>
+</svg>

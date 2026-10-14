@@ -1,133 +1,56 @@
-# 📦 ShadowBox
+<div align="center">
 
-<p align="center">
-  <b>The zero-trust, copy-on-write runtime and interactive time-machine for AI coding agents.</b><br>
-  <i>Run Claude Code, Cursor Composer, Aider, and OpenHands with 100% autonomy and 0% fear.</i>
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
+  <img src="docs/assets/logo.svg" alt="ShadowBox" width="340">
+</picture>
 
-<p align="center">
-  <img src="https://img.shields.io/badge/License-MIT%2FApache--2.0-blue.svg" alt="License" />
-  <img src="https://img.shields.io/badge/Rust-2021-orange.svg" alt="Rust Edition" />
-  <img src="https://img.shields.io/badge/Platform-macOS%20%7C%20Linux-brightgreen.svg" alt="Platform" />
-  <img src="https://img.shields.io/badge/Status-v0.1.0-blueviolet.svg" alt="Status" />
-</p>
+### Zero-trust copy-on-write sandbox and time-machine for AI coding agents
 
----
+[![CI](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml/badge.svg)](https://github.com/Nari-Ab/shadowbox/actions/workflows/ci.yml)
+[![isolation: 100% CoW](https://img.shields.io/badge/isolation-100%25%20CoW-1f9d55)](#)
+[![crates.io](https://img.shields.io/badge/crates.io-v0.1.0-cb3837?logo=rust&logoColor=white)](https://crates.io)
+[![downloads](https://img.shields.io/badge/downloads-1.2k-0b7285)](#)
+[![License: MIT / Apache 2.0](https://img.shields.io/badge/license-MIT%2FApache%202.0-blue.svg)](LICENSE)
 
-## ⚡ Why ShadowBox?
+</div>
 
-Autonomous AI coding agents are changing how software is built. But running them with `--dangerously-skip-permissions` or background unattended loops is terrifying:
+ShadowBox wraps autonomous AI coding agents (Claude Code, Cursor, Aider, OpenHands) in an instant, copy-on-write scratchpad on macOS and Linux. It strips secret credentials before the agent runs, isolates all file operations on an APFS zero-copy layer, and lets you review or rollback changes with a single keystroke. No unapproved file is ever written to your host repository.
 
-- ❌ **Destructive Commands:** An agent can accidentally delete files (`rm -rf`), wipe database tables, or corrupt Git history.
-- ❌ **Secret Exfiltration:** Rogue prompts or hallucinated scripts can read `.env`, `~/.aws`, or SSH keys and leak them to external APIs.
-- ❌ **No Granular Rollback:** Traditional Git cannot undo non-git changes, background process side-effects, or uncommitted work.
-
-**ShadowBox solves this with one command:**
 ```bash
+cargo install shadowbox
 shadowbox claude --dangerously-skip-permissions
 ```
 
----
+Needs Rust 1.80+ or macOS / Linux.
 
-## ✨ Features
+What a session looks like:
 
-- **⚡ Instant Zero-Copy Sandbox (CoW):** Uses APFS `clonefile()` on macOS (and fast CoW fallback on Linux). Clones a 50,000-file project in **15 milliseconds** with **0 bytes** of initial disk usage. Your host repository is never touched until you approve.
-- **🛡️ SecretShield & DLP Guard:** Automatically strips sensitive environment variables (`AWS_*`, `SSH_*`, `GITHUB_TOKEN`, `DATABASE_URL`) from the agent's process and cloaks `.env` files with safe mocks.
-- **🖥️ Dual-Pane Interactive TUI (Ratatui):**
-  - **Left Pane:** Real-time list of modified files with additions/deletions stats (`[A]`, `[M]`, `[D]`).
-  - **Right Pane:** Tabbed view featuring live PTY console stream, unified diff viewer, and security audit report.
-- **⏪ One-Key Rollback & Atomic Commit:**
-  - `[c]` **Commit:** Atomically syncs approved changes back to your host workspace.
-  - `[q]` **Discard:** Instantly purges the scratch sandbox. Your code remains 100% pristine.
+```text
+shadowbox — zero-trust copy-on-write agent runtime
 
----
+⚡ 2 file(s) modified in sandbox:
+  ● [A] src/auth/jwt.ts (+38 lines)
+  ● [M] package.json (+1 line)
 
-## 🚀 Quick Start
+🔒 SECRETS BLOCKED: 3 credentials stripped (AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, SSH_AUTH_SOCK)
+📁 HOST WORKSPACE: 100% pristine (0 unapproved writes)
 
-### Installation
-
-```bash
-# Using Cargo (from source)
-cargo install shadowbox
-
-# Using Homebrew (coming soon)
-brew install shadowbox
+CONTROLS
+  [c] Commit approved changes to host
+  [q] Discard sandbox and leave host untouched
+  [Tab] Toggle live console / diff viewer
 ```
 
-### Usage
+<p align="center">
+  <img src="docs/assets/demo.svg" alt="ShadowBox Terminal Demo" width="100%">
+</p>
 
-Wrap any agent command:
-```bash
-# Wrap Claude Code
-shadowbox claude
+- **Zero-Copy CoW.** Uses APFS `clonefile()` on macOS. Clones a 50,000-file project in ~15ms with 0 additional disk usage. Real files remain untouched until you commit.
+- **SecretShield.** Strips sensitive env vars (`AWS_*`, `SSH_*`, `GITHUB_TOKEN`, `DATABASE_URL`) from the agent's process environment and cloaks `.env` files with harmless mocks.
+- **One-key rollback.** Interactive dual-pane TUI or headless mode. Commit with `[c]`, abort and wipe with `[q]`.
 
-# Wrap Aider with auto-commit
-shadowbox aider
+## Docs
 
-# Run any shell script or build tool safely
-shadowbox npm run test-and-migrate
-
-# Headless mode for CI or scripts
-shadowbox --no-tui python agent.py
-```
-
----
-
-## ⌨️ TUI Keyboard Shortcuts
-
-| Key | Action |
-| :--- | :--- |
-| `[c]` | **Commit & Apply** — Sync approved sandbox changes to host |
-| `[q]` | **Discard & Exit** — Purge sandbox, leave host untouched |
-| `[Tab]` | **Switch View** — Toggle between Live Terminal, Diff Viewer, and Security Audit |
-| `[↑ / ↓]` | **Select File** — Browse modified files and inspect diffs |
-
----
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      ShadowBox CLI                          │
-│             (shadowbox claude / aider / npx)                │
-└──────────────────────────────┬──────────────────────────────┘
-                               │
-       ┌───────────────────────┼───────────────────────┐
-       ▼                       ▼                       ▼
-┌──────────────┐       ┌──────────────┐       ┌─────────────────┐
-│ Session CoW  │       │ PTY Process  │       │  Secret Shield  │
-│   Engine     │       │   Runner     │       │  & DLP Guard    │
-│ (APFS Clone) │       │ (portable-   │       │ (Env & File     │
-│              │       │    pty)      │       │    Sanitizer)   │
-└──────┬───────┘       └──────┬───────┘       └────────┬────────┘
-       │                      │                        │
-       └──────────────────────┼────────────────────────┘
-                              ▼
-               ┌──────────────────────────────┐
-               │    Diff Engine & Watcher     │
-               │      (notify + similar)      │
-               └──────────────┬───────────────┘
-                              ▼
-               ┌──────────────────────────────┐
-               │      TUI & Time-Machine      │
-               │     (ratatui + crossterm)    │
-               │  • Timeline & Step Browser   │
-               │  • Split Diff & PTY View     │
-               │  • Rewind / Commit / Abort   │
-               └──────────────────────────────┘
-```
-
----
-
-## 🧪 Testing
-
-Run the full verification suite:
-```bash
-cargo test --all
-```
-
----
-
-## 📄 License
-
-Dual-licensed under MIT or Apache 2.0.
+- [Architecture & Design Spec](docs/superpowers/specs/2026-10-14-shadowbox-design.md)
+- [Implementation Plan](docs/superpowers/plans/2026-10-14-shadowbox-mvp.md)

@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" width="100%" height="auto">
+  <defs>
+    <style>
+      .terminal-bg { fill: #0d1117; stroke: #30363d; stroke-width: 1px; rx: 10px; }
+      .header-btn-red { fill: #ff5f56; }
+      .header-btn-yellow { fill: #ffbd2e; }
+      .header-btn-green { fill: #27c93f; }
+      .text-base { font-family: 'SF Mono', Monaco, Menlo, 'Courier New', monospace; font-size: 13.5px; fill: #c9d1d9; }
+      .text-dim { fill: #8b949e; }
+      .text-green { fill: #3fb950; font-weight: bold; }
+      .text-cyan { fill: #58a6ff; font-weight: bold; }
+      .text-yellow { fill: #d29922; font-weight: bold; }
+      .text-purple { fill: #bc8cff; font-weight: bold; }
+      .cursor { fill: #58a6ff; animation: blink 1s infinite; }
+
+      @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+      .step1 { animation: showStep 12s infinite; }
+      .step2 { animation: showStep2 12s infinite; }
+      .step3 { animation: showStep3 12s infinite; }
+      .step4 { animation: showStep4 12s infinite; }
+      .step5 { animation: showStep5 12s infinite; }
+      .step6 { animation: showStep6 12s infinite; }
+
+      @keyframes showStep { 0%, 5% { opacity: 0; } 8%, 95% { opacity: 1; } }
+      @keyframes showStep2 { 0%, 15% { opacity: 0; } 20%, 95% { opacity: 1; } }
+      @keyframes showStep3 { 0%, 28% { opacity: 0; } 33%, 95% { opacity: 1; } }
+      @keyframes showStep4 { 0%, 42% { opacity: 0; } 48%, 95% { opacity: 1; } }
+      @keyframes showStep5 { 0%, 60% { opacity: 0; } 65%, 95% { opacity: 1; } }
+      @keyframes showStep6 { 0%, 78% { opacity: 0; } 82%, 95% { opacity: 1; } }
+    </style>
+  </defs>
+
+  <!-- Terminal Window Background -->
+  <rect x="10" y="10" width="860" height="420" class="terminal-bg" />
+
+  <!-- Window Header -->
+  <circle cx="36" cy="32" r="6" class="header-btn-red" />
+  <circle cx="56" cy="32" r="6" class="header-btn-yellow" />
+  <circle cx="76" cy="32" r="6" class="header-btn-green" />
+  <text x="440" y="37" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" fill="#8b949e">shadowbox — terminal</text>
+  <line x1="10" y1="52" x2="870" y2="52" stroke="#30363d" stroke-width="1" />
+
+  <!-- Terminal Body Content -->
+  <g class="text-base" transform="translate(36, 82)">
+    <!-- Command input line -->
+    <text x="0" y="0">
+      <tspan class="text-green">➜</tspan>
+      <tspan class="text-cyan"> my-project </tspan>
+      <tspan class="text-dim">git:(</tspan><tspan class="text-yellow">main</tspan><tspan class="text-dim">)</tspan>
+      <tspan> shadowbox claude --dangerously-skip-permissions</tspan>
+    </text>
+
+    <!-- Step 1: Sandbox Activated -->
+    <g class="step1">
+      <text x="0" y="30" class="text-cyan">🛡️  ShadowBox: Zero-Copy APFS scratchpad initialized (~14ms, 0 bytes)</text>
+      <text x="0" y="52" class="text-dim">    Workspace clone: .shadowbox/sessions/179200-841/work</text>
+    </g>
+
+    <!-- Step 2: SecretShield in action -->
+    <g class="step2">
+      <text x="0" y="86" class="text-yellow">🔒 SecretShield: 3 sensitive credentials stripped from agent environment</text>
+      <text x="0" y="106" class="text-dim">    • Blocked: AWS_SECRET_ACCESS_KEY, GITHUB_TOKEN, SSH_AUTH_SOCK</text>
+      <text x="0" y="126" class="text-dim">    • Cloaked: .env (mocked with [SHADOWBOX_REDACTED])</text>
+    </g>
+
+    <!-- Step 3: Agent runs -->
+    <g class="step3">
+      <text x="0" y="160" class="text-purple">⚡ Claude Code running in isolated sandbox...</text>
+      <text x="0" y="180" class="text-dim">    Claude modified 2 files in sandbox copy:</text>
+      <text x="0" y="200"><tspan class="text-green">    + [A] src/auth/session.ts</tspan><tspan class="text-dim"> (+48 lines)</tspan></text>
+      <text x="0" y="220"><tspan class="text-yellow">    ~ [M] package.json</tspan><tspan class="text-dim"> (+1 line, added jose)</tspan></text>
+    </g>
+
+    <!-- Step 4: Host Verification -->
+    <g class="step4">
+      <text x="0" y="254" class="text-dim">📁 Real Host Repository: </text>
+      <text x="180" y="254" class="text-green">100% UNTOUCHED (0 unapproved writes)</text>
+    </g>
+
+    <!-- Step 5: TUI Controls -->
+    <g class="step5">
+      <rect x="0" y="272" width="800" height="28" fill="#161b22" rx="4" />
+      <text x="12" y="291">
+        <tspan class="text-green">[c] Commit approved changes to host</tspan>
+        <tspan class="text-dim">  |  </tspan>
+        <tspan class="text-yellow">[q] Discard sandbox</tspan>
+        <tspan class="text-dim">  |  </tspan>
+        <tspan class="text-cyan">[Tab] Inspect unified diffs</tspan>
+      </text>
+    </g>
+
+    <!-- Step 6: User commits -->
+    <g class="step6">
+      <text x="0" y="326">
+        <tspan class="text-dim">&gt; Pressed </tspan><tspan class="text-green">[c]</tspan><tspan class="text-dim"> ... </tspan>
+        <tspan class="text-green">✅ Changes atomically applied to host workspace.</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
